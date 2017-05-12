@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js"> </script>
+<style>
+body {width: 100%; background-color: #2445b7;}
+.live {width: 200px; float: left; height: 200px; background-size: cover; border-radius: 50%; border-color: white; border-style: solid; border-width: 10px; margin: 5px;}
+  .live img {width: 100%;}
+</style>
+</head>
+
+<body>
+
+<script>
+(function() {
+  const db = 'https://new18-4aa8f.firebaseio.com/';
+  axios.post('https://api-dsa.17app.co/api/v1/liveStreams/getSuggestedLiveStreams', {"region":"global","count":10})
+    .then(res => res.data.data)
+    .then(data => JSON.parse(data))
+    .then(data => {
+      //console.log(data)
+      data.forEach(user => {
+        const {userID} = user;
+        const {picture, roomID} = user.userInfo;
+        axios.patch(db+'user/'+userID+'.json', user.userInfo);
+        const d = document.createElement('a');
+        d.target = '_blank';
+        d.href = 'http://17.media/share/live/'+roomID+'';
+        //d.className = 'live';
+        d.innerHTML = '<div class="live" style="background-image: url(http://cdn.17app.co/'+picture+')"></div>';
+        //d.innerHTML = '<a target="_blank" href="http://17.media/share/live/'+roomID+'"><img src="http://cdn.17app.co/'+picture+'"/></a>';
+        document.body.appendChild(d);
+      });
+    });
+
+// background-image: url("http://cdn.17app.co/41C9A3A0-656D-482F-ADF0-227EC95D8836.jpg");
+})();
+</script>
+</body>
+</html>
+
