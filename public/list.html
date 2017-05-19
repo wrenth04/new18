@@ -27,7 +27,7 @@ body {width: 100%; background-color: #2445b7;}
   const db = 'https://new18-4aa8f.firebaseio.com/';
   axios.post('https://api-dsa.17app.co/api/v1/liveStreams/getSuggestedLiveStreams', {"region":"global","count":10})
     .then(res => res.data.data)
-    .then(data => JSON.parse(data))
+    .then(data => JSON.parse(data).sort((a, b) => b.liveViewerCount - a.liveViewerCount))
     .then(data => {
       //console.log(data)
       data.forEach(user => {
