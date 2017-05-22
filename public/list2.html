@@ -19,7 +19,8 @@
 
 <style>
 body {width: 100%; background-color: #2445b7;}
-.live {width: 200px; float: left; height: 300px; background-size: cover; border-radius: 5%; border-color: white; border-style: solid; border-width: 5px; margin: 5px;}
+.live {position: relative; width: 200px; float: left; height: 300px; background-size: cover; border-radius: 5%; border-color: white; border-style: solid; border-width: 2px; margin: 5px; background-position: center center;}
+.live .thumb {position: absolute; right: 10px; bottom: 10px; width: 60px; height: 60px; background-size: cover; border-radius: 50%; border-color: white; border-style: solid; border-width: 2px;}
   .live img {width: 100%;}
 </style>
 </head>
@@ -54,8 +55,8 @@ body {width: 100%; background-color: #2445b7;}
         d.target = '_blank';
         d.href = 'http://17.media/share/live/'+roomID+'';
         //d.className = 'live';
-        d.innerHTML = '<div id="uroomID" class="live" style="background-image: url(http://cdn.17app.co/picture)"></div>'
-          .replace('picture', picture)
+        d.innerHTML = '<div id="uroomID" class="live" style="background-image: url(http://cdn.17app.co/picture)"><div class="thumb" style="background-image: url(http://cdn.17app.co/picture)"></div></div>'
+          .replace(/picture/g, picture)
           .replace('roomID', roomID);
         //d.innerHTML = '<a target="_blank" href="http://17.media/share/live/'+roomID+'"><img src="http://cdn.17app.co/'+picture+'"/></a>';
         document.body.appendChild(d);
