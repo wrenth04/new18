@@ -1,1 +1,1 @@
-FROM wrenth04/new18:screenshot-server 
+FROM wrenth04/new18:screenshot-server-v2
