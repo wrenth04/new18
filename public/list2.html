@@ -65,6 +65,11 @@ body {width: 100%; background-color: #2445b7;}
             const u = document.querySelector('#u'+roomID);
             u.style.backgroundImage='url('+url+')';
             u.style.borderColor = 'red';
+          })
+          .catch(() => {
+            const u = document.querySelector('#u'+roomID);
+            u.style.backgroundImage='url(https://new18.now.sh/?roomID='+roomID+')';
+            u.style.borderColor = '#666';
           });
       });
     });
