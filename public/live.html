@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js"> </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.3.0/video.min.js"> </script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.3.0/video-js.min.css" rel="stylesheet">
 <style>
 body {width: 100%;}
-.video {width: 50%; float: left;}
+.video {width: 100%; float: left;}
 </style>
 <script>
   videojs.options.flash.swf = 'https://cdnjs.cloudflare.com/ajax/libs/video.js/5.3.0/video-js.swf';
@@ -15,28 +14,28 @@ body {width: 100%;}
 
 <body>
 
-<video id="v1" class="video video-js vjs-default-skin"
-  controls
-  preload="auto"
-  data-setup='{"techOrder": ["flash", "html5"]}'>
-  <source src="rtmp://wansu-global-pull.rtmp.17app.co/vod/99761120_dfc2989c-d174-43ed-a6e7-7edbfba49a05" type='rtmp/mp4' />
-</video>
-<video id="v2" class="video video-js vjs-default-skin"
-  controls
-  preload="auto"
-  data-setup='{"techOrder": ["flash", "html5"]}'>
-  <source src="rtmp://wansu-global-pull.rtmp.17app.co/vod/99761858_3afe2955-d017-4267-bcf5-b992655cacf7" type='rtmp/mp4' />
-</video>
-
 
 <script>
+function getParameterByName(name, url) {
+    if (!url) url = window.location.search;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 (function() {
-  //<source src="rtmp://wansu-global-pull.rtmp.17app.co/vod/99758640_3a5b6911-2b48-44c6-99fd-beecf6074e9d" type="rtmp/mp4"></source>
-return;
-  videojs('v1').ready(function() {
-    this.src({type: 'rtmp/mp4', src: 'rtmp://wansu-global-pull.rtmp.17app.co/vod/99761120_dfc2989c-d174-43ed-a6e7-7edbfba49a05'})
-    this.play();
-  });
+  const url = getParameterByName('url');
+  const player = `
+<video id="v1" class="video video-js vjs-default-skin"
+  controls
+  data-setup='{"techOrder": ["html5", "flash"]}'>
+  <source src="${url}" type="rtmp/mp4"> </source>
+</video>
+`;
+  document.body.innerHTML += player;
 })();
 </script>
 </body>

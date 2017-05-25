@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js"> </script>
+
+<script src="https://www.gstatic.com/firebasejs/4.0.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDqIIXzAUCEHfV6ku_nJLpVvktHWlPtJZs",
+    authDomain: "new18-4aa8f.firebaseapp.com",
+    databaseURL: "https://new18-4aa8f.firebaseio.com",
+    projectId: "new18-4aa8f",
+    storageBucket: "new18-4aa8f.appspot.com",
+    messagingSenderId: "621052215402"
+  };
+  firebase.initializeApp(config);
+</script>
+
+<style>
+body {width: 100%; background-color: #2445b7;}
+.live {position: relative; width: 300px; float: left; height: 450px; background-size: cover; border-radius: 5%; border-color: white; border-style: solid; border-width: 2px; margin: 5px; background-position: center center;}
+.live .thumb {position: absolute; right: 10px; bottom: 10px; width: 100px; height: 100px; background-size: cover; border-radius: 50%; border-color: white; border-style: solid; border-width: 2px;}
+  .live img {width: 100%;}
+</style>
+</head>
+
+<body>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-56523839-5', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<script>
+(function() {
+  const isMobile = typeof window.orientation !== 'undefined';
+  const db = 'https://new18-4aa8f.firebaseio.com/';
+  const storage = firebase.storage().ref('/');
+  const openRoom = (document.location.search || '').replace('?', '');
+
+  axios.post('https://api-dsa.17app.co/api/v1/liveStreams/getSuggestedLiveStreams', {"region":"global","count":10})
+    .then(res => res.data.data)
+    .then(data => JSON.parse(data).sort((a, b) => b.liveViewerCount - a.liveViewerCount))
+    .then(data => {
+      data.forEach(user => {
+        const {userID, rtmpUrls} = user;
+        const {picture, roomID} = user.userInfo;
+        axios.patch(db+'user/'+userID+'.json', user.userInfo);
+        const d = document.createElement('a');
+        d.href = rtmpUrls[0].url;
+        d.innerHTML = `
+<div id="u${roomID}" class="live" style="background-image: url(http://cdn.17app.co/${picture})">
+  <a href="http://17.media/share/live/${roomID}" target="_blank">
+    <div class="thumb" style="background-image: url(http://cdn.17app.co/${picture})"></div>
+  </a>
+</div>
+`;
+
+        if(roomID == openRoom && document.body.childNodes.length > 0)
+          document.body.insertBefore(d, document.body.childNodes[0]);
+        else
+          document.body.appendChild(d);
+
+        storage.child('user/'+roomID+'.jpg').getDownloadURL()
+          .then(url => {
+            const u = document.querySelector('#u'+roomID);
+            u.style.backgroundImage='url('+url+')';
+            u.style.borderColor = 'red';
+          })
+          .catch(() => {
+            const u = document.querySelector('#u'+roomID);
+            u.style.backgroundImage='url(https://new18.now.sh/?roomID='+roomID+')';
+            u.style.borderColor = '#666';
+          });
+      });
+    });
+})();
+</script>
+</body>
+</html>
+
