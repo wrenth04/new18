@@ -1,2 +1,2 @@
-FROM wrenth04/new18:linebot-v10
+FROM wrenth04/new18:linebot-v18
 
