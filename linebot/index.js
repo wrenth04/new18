@@ -40,7 +40,7 @@ function handleEvent(event) {
         altText: name,
         template: {
           type: 'buttons',
-          //thumbnailImageUrl: 'https://new18.now.sh/?roomID='+roomID,
+          thumbnailImageUrl: 'https://new18.now.sh/?line=true&roomID='+roomID,
           title: name,
           text: text,
           actions: [

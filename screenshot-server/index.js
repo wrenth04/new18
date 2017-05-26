@@ -11,10 +11,11 @@ app.use(logger());
 app.use(bodyParser());
 
 app.use(async (ctx, next) => {
-  const { url, roomID } = ctx.request.query;
+  const { url, roomID, line } = ctx.request.query;
   if(!url && !roomID) return ctx.body = null;
   ctx.url = url;
   ctx.roomID = roomID;
+  ctx.line = line;
   await next();
 });
 
@@ -36,12 +37,17 @@ app.use(async ctx => {
   const resizeCmd = 'convert -quality 80 -resize 400x400 png jpg'
     .replace('png', name)
     .replace('jpg', namejpg);
+  const paddingCmd = 'convert jpg -gravity center -background white -extent 600x400 2jpg'
+    .replace(/jpg/g, namejpg);
 
   await exec(cmd);
   await exec(resizeCmd);
-  await send(ctx, namejpg);
+  if(ctx.line) await exec(paddingCmd);
+  if(ctx.line) await send(ctx, '2'+namejpg);
+  else await send(ctx, namejpg);
   await fs.remove(name);
   await fs.remove(namejpg);
+  if(ctx.line) await fs.remove('2'+namejpg);
 });
 
 app.listen(3000);

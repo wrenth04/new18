@@ -9,6 +9,9 @@
     "koa-send": "^4.1.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "docker build --tag wrenth04/new18:screenshot-server-v3 .",
+    "push": "docker push wrenth04/new18:screenshot-server-v3",
+    "deploy": "cd screenshot-server && now --public"
   }
 }
