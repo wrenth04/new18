@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@line/bot-sdk": "^1.0.0",
+    "axios": "^0.16.1",
+    "express": "^4.15.3"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "build": "docker build --tag wrenth04/new18:linebot-v7 .",
+    "push": "docker push wrenth04/new18:linebot-v7",
+    "deploy": "cd new18linebot && now --public -e TOKEN=@new18-line-token -e SECRET=@new18-line-secret"
+  }
+}
