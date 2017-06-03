@@ -31,23 +31,28 @@ app.use(async ctx => {
     .replace('time', Date.now())
     .replace('random', Math.round(Math.random()*1000));
   const namejpg = name.replace('png', 'jpg');
-  const cmd = 'ffmpeg -loglevel panic -i "url" -f image2 -vframes 1 name'
+  const cmd = 'ffmpeg -loglevel panic -i "url" -f image2 -vframes 1 /tmp/name'
     .replace('url', ctx.url)
     .replace('name', name);
-  const resizeCmd = 'convert -quality 80 -resize 400x400 png jpg'
+  const resizeCmd = 'convert -quality 80 -resize 400x400 /tmp/png /tmp/jpg'
     .replace('png', name)
     .replace('jpg', namejpg);
-  const paddingCmd = 'convert jpg -gravity center -background white -extent 600x400 2jpg'
+  const paddingCmd = 'convert /tmp/jpg -gravity center -background white -extent 600x400 /tmp/2jpg'
     .replace(/jpg/g, namejpg);
 
   await exec(cmd);
   await exec(resizeCmd);
-  if(ctx.line) await exec(paddingCmd);
-  if(ctx.line) await send(ctx, '2'+namejpg);
-  else await send(ctx, namejpg);
-  await fs.remove(name);
-  await fs.remove(namejpg);
-  if(ctx.line) await fs.remove('2'+namejpg);
+
+  if(ctx.line) {
+    await exec(paddingCmd);
+    await send(ctx, '2'+namejpg, {root: __dirname  + '/../tmp'});
+    await fs.remove('/tmp/2'+namejpg);
+  } else {
+    await send(ctx, namejpg, {root: __dirname  + '/../tmp'});
+  }
+
+  await fs.remove('/tmp/'+name);
+  await fs.remove('/tmp/'+namejpg);
 });
 
 app.listen(3000);

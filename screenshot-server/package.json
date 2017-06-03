@@ -10,8 +10,8 @@
   },
   "scripts": {
     "start": "node index.js",
-    "build": "docker build --tag wrenth04/new18:screenshot-server-v3 .",
-    "push": "docker push wrenth04/new18:screenshot-server-v3",
+    "build": "docker build --tag wrenth04/new18:screenshot-server-v10 .",
+    "push": "docker push wrenth04/new18:screenshot-server-v10",
     "deploy": "cd screenshot-server && now --public"
   }
 }
